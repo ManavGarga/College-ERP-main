@@ -1,15 +1,16 @@
 services:
   - type: web
-    name: college-erp
+    name: college-erp-main
     runtime: python
-    buildCommand: "./build.sh"
+    pythonVersion: "3.11.0"
+    buildCommand: "pip install -r requirements.txt && python manage.py collectstatic --no-input && python manage.py migrate"
     startCommand: "gunicorn college_management_system.wsgi:application"
     envVars:
       - key: SECRET_KEY
         generateValue: true
       - key: DEBUG
-        value: False
+        value: "False"
       - key: ALLOWED_HOSTS
-        value: college-erp.onrender.com
+        value: "college-erp-main.onrender.com"
       - key: PYTHON_VERSION
-        value: 3.11.0
+        value: "3.11.0"
