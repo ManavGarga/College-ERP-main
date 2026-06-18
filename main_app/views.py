@@ -8,6 +8,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from .EmailBackend import EmailBackend
 from .models import Attendance, Session, Subject 
+from django.conf import settings
 
 # Create your views here.
 
@@ -20,7 +21,7 @@ def login_page(request):
             return redirect(reverse("staff_home"))
         else:
             return redirect(reverse("student_home"))
-    return render(request, 'main_app/login.html')
+    return render(request, 'main_app/login.html', {'recaptcha_site_key': settings.RECAPTCHA_SITE_KEY})
 
 
 def doLogin(request, **kwargs):
@@ -30,7 +31,7 @@ def doLogin(request, **kwargs):
         #Google recaptcha
         captcha_token = request.POST.get('g-recaptcha-response')
         captcha_url = "https://www.google.com/recaptcha/api/siteverify"
-        captcha_key = "6LfTGD4qAAAAALtlli02bIM2MGi_V0cUYrmzGEGd"
+        captcha_key = settings.RECAPTCHA_SECRET_KEY
         # captcha_key = "6LfHPwojAAAAAAtIjbi-7_N4fNf7Wp0LUiYlCDw_"  #server
         data = {
             'secret': captcha_key,
